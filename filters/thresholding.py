@@ -2,12 +2,14 @@ import sys
 import cv2
 import numpy as np
 
+from filters.grayscale import grayscale
+
 
 def thresholding(
     image: np.ndarray, threshold: int = 127, max_value: int = 255
 ) -> np.ndarray:
     if len(image.shape) == 3:
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        image = grayscale(image=image)
 
     copied_image = np.zeros_like(image)
 
