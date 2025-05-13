@@ -27,9 +27,10 @@ if __name__ == "__main__":
     image = cv2.imread("mock/bobsin.jpg")
 
     kernel = np.array([[-1, -1, -1], [-1, 8, -1], [-1, -1, -1]])
-    processed_image = basic_high_pass(image=image, kernel=kernel)
+    filtered_image = basic_high_pass(image=image, kernel=kernel)
+    # filtered_image = cv2.filter2D(image, -1, kernel)
 
-    cv2.imshow("Thresholded Image", processed_image)
+    cv2.imshow("Thresholded Image", filtered_image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     cv2.waitKey(1)
