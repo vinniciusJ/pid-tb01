@@ -11,6 +11,7 @@ def calculate_default_conversion_matrix(
     red_percent = 0.299
 
     result = blue_percent * blue + green_percent * green + red_percent * red
+
     return result.astype(np.uint8)
 
 
