@@ -6,7 +6,7 @@ import sys
 from filters.grayscale import grayscale
 
 
-def basic_high_pass(image: np.array, kernel: np.array) -> np.array:
+def basic_high_pass(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
     image = grayscale(image=image)
 
     height, width = image.shape[:2]
@@ -27,9 +27,9 @@ if __name__ == "__main__":
     image = cv2.imread("mock/bobsin.jpg")
 
     kernel = np.array([[-1, -1, -1], [-1, 8, -1], [-1, -1, -1]])
-    grayscale_image = basic_high_pass(image=image, kernel=kernel)
+    processed_image = basic_high_pass(image=image, kernel=kernel)
 
-    cv2.imshow("Thresholded Image", grayscale_image)
+    cv2.imshow("Thresholded Image", processed_image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     cv2.waitKey(1)
