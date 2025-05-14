@@ -6,12 +6,12 @@ from filters.grayscale import grayscale
 from utils.convolve import convolve
 
 
-def roberts(image: np.ndarray) -> np.ndarray:
+def prewitt(image: np.ndarray) -> np.ndarray:
     if len(image.shape) == 3:
         image = grayscale(image=image)
 
-    kernel_x = np.array([[1, 0], [0, -1]])
-    kernel_y = np.array([[0, 1], [-1, 0]])
+    kernel_x = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]], dtype=np.float32)
+    kernel_y = np.array([[1, 1, 1], [0, 0, 0], [-1, -1, -1]], dtype=np.float32)
 
     gradient_x = convolve(image=image, kernel=kernel_x)
     gradient_y = convolve(image=image, kernel=kernel_y)
@@ -25,11 +25,10 @@ def roberts(image: np.ndarray) -> np.ndarray:
 if __name__ == "__main__":
     image = cv2.imread("mock/bobsin.jpg")
 
-    filtered_image = roberts(image=image)
+    filtered_image = prewitt(image=image)
 
     cv2.imshow("Prewitt Filtered Image", filtered_image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    cv2.waitKey(1)
 
     sys.exit(0)
