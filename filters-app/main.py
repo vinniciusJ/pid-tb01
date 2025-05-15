@@ -1,7 +1,7 @@
 import sys
 from PySide6.QtWidgets import QApplication
 from style import apply_dark_theme
-from playground import Playground
+from playground.index import Playground
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
