@@ -4,7 +4,6 @@ import numpy as np
 
 from filters.grayscale import grayscale
 
-
 def thresholding(
     image: np.ndarray, threshold: int = 127, max_value: int = 255
 ) -> np.ndarray:
