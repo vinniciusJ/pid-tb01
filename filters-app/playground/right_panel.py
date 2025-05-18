@@ -17,8 +17,9 @@ FILTERS = [
 ]
 
 class RightPanel(QWidget):
-    def __init__(self, get_image_path_callback=None):
+    def __init__(self, apply_callback=None):
         super().__init__()
+        self.apply_callback = apply_callback
         self.init_ui()
 
     def init_ui(self):
@@ -26,35 +27,36 @@ class RightPanel(QWidget):
         main_layout.setAlignment(Qt.AlignTop)
         title = QLabel("Filtros disponíveis:")
         title.setFont(QFont("Ubuntu", 24, weight=50))
-        main_layout .addWidget(title)
+        main_layout.addWidget(title)
 
         self.filters_options_container = QWidget()
-        button_layout = QVBoxLayout()
-        button_layout.setContentsMargins(16, 16, 16, 16)
-        button_layout.setSpacing(8)
 
-        self.filter_button_group = QButtonGroup(self)
-        self.filter_button_group.setExclusive(True)
-        self.filter_button_group.idClicked.connect(self.handle_filter_id_click)
+        filters_layout = QVBoxLayout()
+        filters_layout.setContentsMargins(16, 16, 16, 16)
+        filters_layout.setSpacing(8)
+
+        self.filters_button_group = QButtonGroup(self)
+        self.filters_button_group.setExclusive(True)
+        self.filters_button_group.idClicked.connect(self.handle_filter_id_click)
 
         for idx, filter_name in enumerate(FILTERS):
             radio = QRadioButton(filter_name)
             radio.setObjectName("filterRadio")
-            self.filter_button_group.addButton(radio, idx)
-            button_layout.addWidget(radio)
+            self.filters_button_group.addButton(radio, idx)
+            filters_layout.addWidget(radio)
 
             if idx == 0:
                 radio.setChecked(True)
 
-        self.filters_options_container.setLayout(button_layout)
+        self.filters_options_container.setLayout(filters_layout)
         self.filters_options_container.setContentsMargins(16, 16, 16, 16)
         main_layout.addWidget(self.filters_options_container)
 
         self.param_container = QVBoxLayout()
         main_layout.addLayout(self.param_container)
 
-        apply_button = PrimaryButton("Aplicar filtro")
-        main_layout.addWidget(apply_button)
+        self.apply_button = PrimaryButton("Aplicar filtro", on_click=self.on_apply_clicked)
+        main_layout.addWidget(self.apply_button)
 
         self.setLayout(main_layout)
 
@@ -80,6 +82,22 @@ class RightPanel(QWidget):
         """)
 
         self.handle_filter_click(FILTERS[0])
+
+    def on_apply_clicked(self):
+        if self.apply_callback:
+            self.apply_callback()
+
+    def get_selected_filter(self) -> str:
+        checked_button = self.filters_button_group.checkedButton()
+        return checked_button.text() if checked_button else ""
+
+    def get_filter_params(self) -> dict:
+        if hasattr(self, "param_widget") and self.param_widget:
+            if hasattr(self.param_widget, "get_values"):
+                return self.param_widget.get_values()  
+            elif hasattr(self.param_widget, "get_kernel"):
+                return {"kernel": self.param_widget.get_kernel()} 
+        return {}
 
     def handle_filter_id_click(self, id: int):
         filter_name = FILTERS[id]

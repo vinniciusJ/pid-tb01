@@ -4,6 +4,9 @@ from PySide6.QtCore import Qt
 from style import TEXT_COLOR
 from playground.left_panel import LeftPanel
 from playground.right_panel import RightPanel
+import cv2
+from filters.grayscale import grayscale
+from filters.thresholding import thresholding
 
 class Playground(QWidget):
     def __init__(self, next_page_callback, choose_image_callback):
@@ -27,7 +30,7 @@ class Playground(QWidget):
         content_layout.setAlignment(Qt.AlignCenter)
 
         self.left_panel = LeftPanel(self.image_path, self.choose_image_callback)
-        self.right_panel = RightPanel()
+        self.right_panel = RightPanel(apply_callback=self.apply_filter)
 
         content_layout.addWidget(self.left_panel, 3)
         content_layout.addWidget(self.right_panel, 2)
@@ -38,3 +41,27 @@ class Playground(QWidget):
     def set_image(self, path):
         self.image_path = path
         self.left_panel.set_image(path)
+
+    def apply_filter(self):
+        if not self.image_path:
+            return 
+
+        selected_filter = self.right_panel.get_selected_filter()
+        params = self.right_panel.get_filter_params()
+
+        image = cv2.imread(self.image_path)
+
+        result_image = None
+
+        if selected_filter == "Escala de Cinza":
+            result_image = grayscale(image)
+        elif selected_filter == "Limiarização":
+            threshold = params.get("threshold", 127)
+            max_value = params.get("max_value", 255)
+            result_image = thresholding(image, threshold, max_value)
+        elif selected_filter == "Passa-Alta básico":
+            kernel = params.get("kernel")
+            result_image = cv2.filter2D(src=image, ddepth=-1, kernel=kernel)
+
+        if result_image is not None:
+            self.left_panel.set_processed_image(result_image)

@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QLabel
 from PySide6.QtGui import QFont
 from PySide6.QtCore import Qt
 from components.input import Input 
+import numpy as np
 
 class HighPassParamsWidget(QWidget):
     def __init__(self, parent=None):
@@ -21,7 +22,7 @@ class HighPassParamsWidget(QWidget):
             for j in range(3):
                 input_widget = Input("")
                 input_widget.setRange(-10, 10)
-                default_value = 8 if (i == 1 and j == 1) else -1  # padrão de máscara Laplaciana
+                default_value = 8 if (i == 1 and j == 1) else -1 
                 input_widget.setValue(default_value)
                 self.kernel_grid.addWidget(input_widget, i, j)
                 row.append(input_widget)
