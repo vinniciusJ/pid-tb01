@@ -1,8 +1,9 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy, QFrame
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy, QFrame
 from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtCore import Qt
 from components.text_button import TextButton
 from style import PRIMARY_COLOR
+from utils import clear_layout
 import cv2
 
 class LeftPanel(QWidget):
@@ -31,31 +32,41 @@ class LeftPanel(QWidget):
         self.render_image_area()
 
     def render_image_area(self):
-        for i in reversed(range(self.image_layout.count())):
-            widget = self.image_layout.itemAt(i).widget()
-            if widget is not None:
-                widget.setParent(None)
+        clear_layout(self.image_layout)
 
         if self.image_path:
             choose_button = TextButton("Escolher outra imagem", on_click=self.choose_image_callback)
             pixmap = QPixmap(self.image_path)
-            self.original_pixmap = pixmap.scaled(250, 250, Qt.KeepAspectRatio)
+            self.original_pixmap = pixmap.scaled(800, 800, Qt.KeepAspectRatio)
             original_label = QLabel("Original")
             original_label.setAlignment(Qt.AlignCenter)
 
-            self.image_label = QLabel()
-            self.image_label.setPixmap(self.original_pixmap)
-            self.image_label.setAlignment(Qt.AlignCenter)
+            self.original_image = QLabel()
+            self.original_image.setPixmap(self.original_pixmap)
+            self.original_image.setAlignment(Qt.AlignCenter)
 
-            self.processed_label = QLabel("Processado")
+            self.processed_label = QLabel("Processada")
             self.processed_label.setAlignment(Qt.AlignCenter)
+            self.processed_label.hide()
+
             self.processed_image_view = QLabel()
             self.processed_image_view.setAlignment(Qt.AlignCenter)
 
-            self.image_layout.addWidget(original_label)
-            self.image_layout.addWidget(self.image_label)
-            self.image_layout.addWidget(self.processed_label)
-            self.image_layout.addWidget(self.processed_image_view)
+            images_layout = QHBoxLayout()
+
+            original_image_container = QVBoxLayout()
+            original_image_container.addWidget(original_label)
+            original_image_container.addWidget(self.original_image)
+
+            processed_image_container = QVBoxLayout()
+            processed_image_container.addWidget(self.processed_label)
+            processed_image_container.addWidget(self.processed_image_view)
+
+            images_layout.addLayout(original_image_container)
+            images_layout.addLayout(processed_image_container)
+
+            self.image_layout.addLayout(images_layout)
+
             self.image_layout.addWidget(choose_button)
         else:
             drop_frame = QFrame()
@@ -78,6 +89,17 @@ class LeftPanel(QWidget):
             self.image_layout.addWidget(drop_frame, stretch=1)
 
     def set_image(self, path):
+        self.original_pixmap = None
+        self.processed_pixmap = None
+        
+        if hasattr(self, "original_image"):
+            self.original_image.clear()
+        if hasattr(self, "processed_image_view"):
+            self.processed_image_view.clear()
+            self.processed_image_view.hide()
+        if hasattr(self, "processed_label"):
+            self.processed_label.hide()
+
         self.image_path = path
         self.render_image_area()
 
@@ -89,5 +111,7 @@ class LeftPanel(QWidget):
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             qimage = QImage(image.data, width, height, width * 3, QImage.Format_RGB888)
 
-        pixmap = QPixmap.fromImage(qimage).scaled(250, 250, Qt.KeepAspectRatio)
+        pixmap = QPixmap.fromImage(qimage).scaled(800, 800, Qt.KeepAspectRatio)
         self.processed_image_view.setPixmap(pixmap)
+
+        self.processed_label.show()

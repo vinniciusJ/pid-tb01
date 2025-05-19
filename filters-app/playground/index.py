@@ -9,17 +9,15 @@ from filters.grayscale import grayscale
 from filters.thresholding import thresholding
 
 class Playground(QWidget):
-    def __init__(self, next_page_callback, choose_image_callback):
+    def __init__(self, choose_image_callback):
         super().__init__()
         self.image_path = None
-        self.next_page_callback = next_page_callback
         self.choose_image_callback = choose_image_callback
         self.init_ui()
 
     def init_ui(self):
         main_layout = QVBoxLayout()
 
-        # Header
         header = QLabel("FiltersApp")
         header.setFont(QFont("Ubuntu", 40, weight=50))
         header.setStyleSheet(f"color: rgb({TEXT_COLOR.red()}, {TEXT_COLOR.green()}, {TEXT_COLOR.blue()});  padding: 16px;")
