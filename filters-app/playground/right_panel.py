@@ -11,9 +11,9 @@ from style import BG_COLOR_2
 FILTERS = [
     "Limiarização", "Escala de Cinza", "Passa-Alta básico",
     "Passa-Alta Alto reforço", "Passa-Baixa Média", "Passa-Baixa Mediana",
-    "Roberts", "Prewitt", "Sobel", "Log", "Zerocross",
-    "Ruídos", "Watershed", "Histograma",
-    "Ajuste adaptativo de histograma",
+    "Roberts", "Prewitt", "Sobel", "Transformacao logaritmica",
+    "Ruídos", "Histograma",
+    "Equalização de histograma",
 ]
 
 class RightPanel(QWidget):
@@ -32,8 +32,7 @@ class RightPanel(QWidget):
         self.filters_options_container = QWidget()
 
         filters_layout = QVBoxLayout()
-        filters_layout.setContentsMargins(16, 16, 16, 16)
-        filters_layout.setSpacing(8)
+        filters_layout.setSpacing(4)
 
         self.filters_button_group = QButtonGroup(self)
         self.filters_button_group.setExclusive(True)
@@ -63,10 +62,10 @@ class RightPanel(QWidget):
         self.setStyleSheet(f"""
             QRadioButton#filterRadio {{
                 background-color: rgb({BG_COLOR_2.red()}, {BG_COLOR_2.green()}, {BG_COLOR_2.blue()});
-                padding: 16px;
+                padding: 12px;
                 border: none;
                 border-radius: 6px;
-                font-size: 16px;
+                font-size: 15px;
             }}
             QRadioButton#filterRadio::indicator {{
                 width: 0;

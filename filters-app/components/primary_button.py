@@ -6,7 +6,7 @@ from PySide6.QtCore import Qt
 from style import PRIMARY_COLOR, PRIMARY_HOVER_COLOR, PRIMARY_PRESSED_COLOR, TEXT_COLOR
 
 class PrimaryButton(QPushButton):
-    def __init__(self, text, on_click=None, width=300, height=60):
+    def __init__(self, text, on_click=None, width=300, height=0):
         super().__init__(text)
         self.setCursor(QCursor(Qt.PointingHandCursor))
         self.setMinimumSize(QSize(width, height))
@@ -15,9 +15,9 @@ class PrimaryButton(QPushButton):
             PrimaryButton {{
                 background-color: rgb({PRIMARY_COLOR.red()}, {PRIMARY_COLOR.green()}, {PRIMARY_COLOR.blue()}) !important;
                 color: {TEXT_COLOR.name()} !important;
-                font-size: 18px;
+                font-size: 16px;
                 font-weight: medium;
-                padding: 0;
+                padding: 12px;
                 border: none;
                 border-radius: 8px;
             }}

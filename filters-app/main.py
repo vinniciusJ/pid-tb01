@@ -29,6 +29,6 @@ if __name__ == "__main__":
     window = Playground(choose_image_callback=lambda: open_image_dialog())
 
     window.setWindowTitle("Filters APP")
-    window.resize(2560, 1590)
+    window.resize(200, 200)
     window.show()
     sys.exit(app.exec())

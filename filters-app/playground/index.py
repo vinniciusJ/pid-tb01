@@ -20,7 +20,7 @@ class Playground(QWidget):
 
         header = QLabel("FiltersApp")
         header.setFont(QFont("Ubuntu", 40, weight=50))
-        header.setStyleSheet(f"color: rgb({TEXT_COLOR.red()}, {TEXT_COLOR.green()}, {TEXT_COLOR.blue()});  padding: 16px;")
+        header.setStyleSheet(f"color: rgb({TEXT_COLOR.red()}, {TEXT_COLOR.green()}, {TEXT_COLOR.blue()});  padding: 8px;")
         header.setAlignment(Qt.AlignLeft)
         main_layout.addWidget(header)
 
@@ -30,8 +30,8 @@ class Playground(QWidget):
         self.left_panel = LeftPanel(self.image_path, self.choose_image_callback)
         self.right_panel = RightPanel(apply_callback=self.apply_filter)
 
-        content_layout.addWidget(self.left_panel, 3)
-        content_layout.addWidget(self.right_panel, 2)
+        content_layout.addWidget(self.left_panel, 4)
+        content_layout.addWidget(self.right_panel, 1)
 
         main_layout.addLayout(content_layout)
         self.setLayout(main_layout)

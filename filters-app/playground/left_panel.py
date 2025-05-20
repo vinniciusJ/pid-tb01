@@ -6,6 +6,9 @@ from style import PRIMARY_COLOR
 from utils import clear_layout
 import cv2
 
+IMAGE_WIDTH = 500
+IMAGE_HEIGHT = 800
+
 class LeftPanel(QWidget):
     def __init__(self, image_path, choose_image_callback):
         super().__init__()
@@ -37,7 +40,7 @@ class LeftPanel(QWidget):
         if self.image_path:
             choose_button = TextButton("Escolher outra imagem", on_click=self.choose_image_callback)
             pixmap = QPixmap(self.image_path)
-            self.original_pixmap = pixmap.scaled(800, 800, Qt.KeepAspectRatio)
+            self.original_pixmap = pixmap.scaled(IMAGE_WIDTH, IMAGE_HEIGHT, Qt.KeepAspectRatio)
             original_label = QLabel("Original")
             original_label.setAlignment(Qt.AlignCenter)
 
@@ -111,7 +114,7 @@ class LeftPanel(QWidget):
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             qimage = QImage(image.data, width, height, width * 3, QImage.Format_RGB888)
 
-        pixmap = QPixmap.fromImage(qimage).scaled(800, 800, Qt.KeepAspectRatio)
+        pixmap = QPixmap.fromImage(qimage).scaled(IMAGE_WIDTH, IMAGE_HEIGHT, Qt.KeepAspectRatio)
         self.processed_image_view.setPixmap(pixmap)
 
         self.processed_label.show()
