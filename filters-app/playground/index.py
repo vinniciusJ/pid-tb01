@@ -7,6 +7,11 @@ from playground.right_panel import RightPanel
 import cv2
 from filters.grayscale import grayscale
 from filters.thresholding import thresholding
+from filters.basic_high_pass import basic_high_pass
+from filters.basic_low_pass import basic_low_pass
+from filters.median import median_filter
+
+from filter_type import FilterType
 
 class Playground(QWidget):
     def __init__(self, choose_image_callback):
@@ -51,15 +56,57 @@ class Playground(QWidget):
 
         result_image = None
 
-        if selected_filter == "Escala de Cinza":
-            result_image = grayscale(image)
-        elif selected_filter == "Limiarização":
-            threshold = params.get("threshold", 127)
-            max_value = params.get("max_value", 255)
-            result_image = thresholding(image, threshold, max_value)
-        elif selected_filter == "Passa-Alta básico":
-            kernel = params.get("kernel")
-            result_image = cv2.filter2D(src=image, ddepth=-1, kernel=kernel)
+        match selected_filter:
+            case FilterType.THRESHOLDING:
+                threshold = params.get("threshold", 127)
+                max_value = params.get("max_value", 255)
+                result_image = thresholding(image, threshold, max_value)
+
+            case FilterType.GRAYSCALE:
+                result_image = grayscale(image)
+
+            case FilterType.HIGH_PASS:
+                kernel = params.get("kernel")
+                result_image = basic_high_pass(image, kernel)
+
+            case FilterType.HIGH_BOOST:
+                result_image = None
+                
+            case FilterType.LOW_PASS_MEAN:
+                result_image = basic_low_pass(image)
+                
+            case FilterType.LOW_PASS_MEDIAN:
+                result_image = median_filter(image)
+
+            case FilterType.ROBERTS:
+                #result_image = roberts(image)
+                result_image = None
+                # TODO
+            
+            case FilterType.PREWITT:
+                #result_image = prewitt(image)
+                result_image = None
+                # TODO
+            
+            case FilterType.SOBEL:
+                #result_image = sobel(image)
+                result_image = None
+                # TODO
+            
+            case FilterType.LOG_TRANSFORM:
+                result_image = None
+                # TODO
+            
+            case FilterType.HISTOGRAM:
+                result_image = None
+                # TODO
+            
+            case FilterType.HIST_EQUALIZATION:
+                result_image = None
+                # TODO
+            
+            case _:
+                result_image = None
 
         if result_image is not None:
             self.left_panel.set_processed_image(result_image)

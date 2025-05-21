@@ -4,7 +4,7 @@ import sys
 
 from filters.grayscale import grayscale
 
-
+#  Passa baixa media
 def basic_low_pass(image: np.ndarray, kernel_size: int) -> np.ndarray:
     image = grayscale(image=image)
 

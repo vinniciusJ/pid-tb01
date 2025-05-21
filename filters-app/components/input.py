@@ -20,7 +20,6 @@ class Input(QWidget):
                 background-color: rgb({BG_COLOR_2.red()}, {BG_COLOR_2.green()}, {BG_COLOR_2.blue()});
                 color: white;
                 font-size: 12pt;
-                padding: 8px;
             }}
             """
         )

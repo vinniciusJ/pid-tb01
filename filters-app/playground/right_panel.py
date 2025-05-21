@@ -5,16 +5,11 @@ from components.primary_button import PrimaryButton
 from playground.params.threshold_params import ThresholdParamsWidget
 from playground.params.high_pass_params import HighPassParamsWidget
 from PySide6.QtWidgets import QMessageBox
+from filter_type import FilterType
 
 from style import BG_COLOR_2
 
-FILTERS = [
-    "Limiarização", "Escala de Cinza", "Passa-Alta básico",
-    "Passa-Alta Alto reforço", "Passa-Baixa Média", "Passa-Baixa Mediana",
-    "Roberts", "Prewitt", "Sobel", "Transformacao logaritmica",
-    "Ruídos", "Histograma",
-    "Equalização de histograma",
-]
+FILTERS = FilterType.list()
 
 class RightPanel(QWidget):
     def __init__(self, apply_callback=None):
@@ -38,8 +33,8 @@ class RightPanel(QWidget):
         self.filters_button_group.setExclusive(True)
         self.filters_button_group.idClicked.connect(self.handle_filter_id_click)
 
-        for idx, filter_name in enumerate(FILTERS):
-            radio = QRadioButton(filter_name)
+        for idx, filter_type in enumerate(FILTERS):
+            radio = QRadioButton(filter_type.value)
             radio.setObjectName("filterRadio")
             self.filters_button_group.addButton(radio, idx)
             filters_layout.addWidget(radio)
@@ -86,9 +81,12 @@ class RightPanel(QWidget):
         if self.apply_callback:
             self.apply_callback()
 
-    def get_selected_filter(self) -> str:
+    def get_selected_filter(self) -> FilterType:
         checked_button = self.filters_button_group.checkedButton()
-        return checked_button.text() if checked_button else ""
+        if not checked_button:
+            return None
+        return FilterType.from_label(checked_button.text())
+
 
     def get_filter_params(self) -> dict:
         if hasattr(self, "param_widget") and self.param_widget:
@@ -99,22 +97,22 @@ class RightPanel(QWidget):
         return {}
 
     def handle_filter_id_click(self, id: int):
-        filter_name = FILTERS[id]
-        self.handle_filter_click(filter_name)
+        filter_type = FILTERS[id]
+        self.handle_filter_click(filter_type)
 
-    def handle_filter_click(self, filter_name: str):
-            # Limpa o param_container
-            while self.param_container.count():
-                child = self.param_container.takeAt(0)
-                if child.widget():
-                    child.widget().deleteLater()
+    def handle_filter_click(self, filter_type: FilterType):
+        # Limpa o param_container
+        while self.param_container.count():
+            child = self.param_container.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
 
-            if filter_name == "Limiarização":
-                self.param_widget = ThresholdParamsWidget()
-                self.param_container.addWidget(self.param_widget)
-            elif filter_name == "Passa-Alta básico":
-                self.param_widget = HighPassParamsWidget()
-                self.param_container.addWidget(self.param_widget)
-            else:
-                self.param_widget = None
+        if filter_type == FilterType.THRESHOLDING:
+            self.param_widget = ThresholdParamsWidget()
+            self.param_container.addWidget(self.param_widget)
+        elif filter_type == FilterType.HIGH_PASS:
+            self.param_widget = HighPassParamsWidget()
+            self.param_container.addWidget(self.param_widget)
+        else:
+            self.param_widget = None
 

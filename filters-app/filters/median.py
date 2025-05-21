@@ -4,7 +4,7 @@ import sys
 
 from filters.grayscale import grayscale
 
-
+# Passa-baixa mediana
 def median_filter(image: np.ndarray, kernel_size: int = 3) -> np.ndarray:
     if len(image.shape) == 3:
         image = grayscale(image=image)

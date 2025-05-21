@@ -5,7 +5,6 @@ import sys
 from filters.grayscale import grayscale
 from utils.convolve import convolve
 
-
 def roberts(image: np.ndarray) -> np.ndarray:
     if len(image.shape) == 3:
         image = grayscale(image=image)
