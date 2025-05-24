@@ -3,26 +3,27 @@ import numpy as np
 import sys
 
 from filters.grayscale import grayscale
-from utils.convolve import convolve
+from utils.normalize import normalize
+from utils.convolve import correlation
+
 
 def roberts(image: np.ndarray) -> np.ndarray:
     if len(image.shape) == 3:
         image = grayscale(image=image)
 
-    kernel_x = np.array([[1, 0], [0, -1]])
-    kernel_y = np.array([[0, 1], [-1, 0]])
+    kernel_x = np.array([[0, 1], [-1, 0]])
+    kernel_y = np.array([[1, 0], [0, -1]])
 
-    gradient_x = convolve(image=image, kernel=kernel_x)
-    gradient_y = convolve(image=image, kernel=kernel_y)
+    gx = correlation(image=image, kernel=kernel_x)
+    gy = correlation(image=image, kernel=kernel_y)
 
-    result = np.sqrt(gradient_x**2 + gradient_y**2)
-    result = np.clip(result, 0, 255).astype(np.uint8)
+    result = np.sqrt(gx**2 + gy**2)
 
-    return result.astype(np.uint8)
+    return normalize(image=result)
 
 
 if __name__ == "__main__":
-    image = cv2.imread("mock/bobsin.jpg")
+    image = cv2.imread("../mock/bobsin.jpg")
 
     filtered_image = roberts(image=image)
 

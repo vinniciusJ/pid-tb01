@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def convolve(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
+def correlation(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
     assert image.ndim == 2, "A imagem deve ser em escala de cinza."
     assert kernel.shape[0] == kernel.shape[1], "O kernel deve ser quadrado."
 
