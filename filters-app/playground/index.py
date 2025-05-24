@@ -8,10 +8,11 @@ import cv2
 from filters.grayscale import grayscale
 from filters.thresholding import thresholding
 from filters.basic_high_pass import basic_high_pass
-from filters.basic_low_pass import basic_low_pass
+from filters.basic_low_pass import mean_low_pass
 from filters.median import median_filter
 
 from filter_type import FilterType
+
 
 class Playground(QWidget):
     def __init__(self, choose_image_callback):
@@ -25,7 +26,9 @@ class Playground(QWidget):
 
         header = QLabel("FiltersApp")
         header.setFont(QFont("Ubuntu", 40, weight=50))
-        header.setStyleSheet(f"color: rgb({TEXT_COLOR.red()}, {TEXT_COLOR.green()}, {TEXT_COLOR.blue()});  padding: 8px;")
+        header.setStyleSheet(
+            f"color: rgb({TEXT_COLOR.red()}, {TEXT_COLOR.green()}, {TEXT_COLOR.blue()});  padding: 8px;"
+        )
         header.setAlignment(Qt.AlignLeft)
         main_layout.addWidget(header)
 
@@ -47,7 +50,7 @@ class Playground(QWidget):
 
     def apply_filter(self):
         if not self.image_path:
-            return 
+            return
 
         selected_filter = self.right_panel.get_selected_filter()
         params = self.right_panel.get_filter_params()
@@ -71,40 +74,40 @@ class Playground(QWidget):
 
             case FilterType.HIGH_BOOST:
                 result_image = None
-                
+
             case FilterType.LOW_PASS_MEAN:
-                result_image = basic_low_pass(image)
-                
+                result_image = mean_low_pass(image)
+
             case FilterType.LOW_PASS_MEDIAN:
                 result_image = median_filter(image)
 
             case FilterType.ROBERTS:
-                #result_image = roberts(image)
+                # result_image = roberts(image)
                 result_image = None
                 # TODO
-            
+
             case FilterType.PREWITT:
-                #result_image = prewitt(image)
+                # result_image = prewitt(image)
                 result_image = None
                 # TODO
-            
+
             case FilterType.SOBEL:
-                #result_image = sobel(image)
+                # result_image = sobel(image)
                 result_image = None
                 # TODO
-            
+
             case FilterType.LOG_TRANSFORM:
                 result_image = None
                 # TODO
-            
+
             case FilterType.HISTOGRAM:
                 result_image = None
                 # TODO
-            
+
             case FilterType.HIST_EQUALIZATION:
                 result_image = None
                 # TODO
-            
+
             case _:
                 result_image = None
 
