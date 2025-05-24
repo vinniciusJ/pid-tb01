@@ -1,9 +1,7 @@
-import cv2
 import numpy as np
-import sys
 
 from filters.grayscale import grayscale
-from utils.convolve import correlation
+from utils.correlation import correlation
 from utils.normalize import normalize
 
 
@@ -23,6 +21,9 @@ def sobel(image: np.ndarray) -> np.ndarray:
 
 
 if __name__ == "__main__":
+    import cv2
+    import sys
+
     image = cv2.imread("../mock/bobsin.jpg")
 
     filtered_image = sobel(image=image)

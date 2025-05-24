@@ -1,8 +1,7 @@
-import sys
-import cv2
 import numpy as np
 
 from filters.grayscale import grayscale
+
 
 def thresholding(
     image: np.ndarray, threshold: int = 127, max_value: int = 255
@@ -10,15 +9,18 @@ def thresholding(
     if len(image.shape) == 3:
         image = grayscale(image=image)
 
-    copied_image = np.zeros_like(image)
+    result = np.zeros_like(image)
 
-    copied_image[image > threshold] = max_value
-    copied_image[image <= threshold] = 0
+    result[image > threshold] = max_value
+    result[image <= threshold] = 0
 
-    return copied_image
+    return result
 
 
 if __name__ == "__main__":
+    import sys
+    import cv2
+
     image = cv2.imread("mock/bobsin.jpg")
 
     thresholded_image = thresholding(image, threshold=127, max_value=255)

@@ -1,6 +1,4 @@
-import cv2
 import numpy as np
-import sys
 
 from filters.grayscale import grayscale
 from utils.correlation import correlation

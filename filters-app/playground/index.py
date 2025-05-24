@@ -7,7 +7,7 @@ from playground.right_panel import RightPanel
 import cv2
 from filters.grayscale import grayscale
 from filters.thresholding import thresholding
-from filters.basic_high_pass import basic_high_pass
+from filters.basic_high_pass import high_pass
 from filters.basic_low_pass import mean_low_pass
 from filters.median import median_filter
 
@@ -70,7 +70,7 @@ class Playground(QWidget):
 
             case FilterType.HIGH_PASS:
                 kernel = params.get("kernel")
-                result_image = basic_high_pass(image, kernel)
+                result_image = high_pass(image, kernel)
 
             case FilterType.HIGH_BOOST:
                 result_image = None

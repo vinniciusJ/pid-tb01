@@ -1,6 +1,5 @@
-import sys
-import cv2
 import numpy as np
+
 
 def calculate_default_conversion_matrix(
     red: np.ndarray, blue: np.ndarray, green: np.ndarray
@@ -21,7 +20,11 @@ def grayscale(image: np.ndarray) -> np.ndarray:
 
     return calculate_default_conversion_matrix(red, blue, green)
 
+
 if __name__ == "__main__":
+    import sys
+    import cv2
+
     image = cv2.imread("mock/bobsin.jpg")
 
     grayscale_image = grayscale(image=image)

@@ -2,14 +2,14 @@ import cv2
 import numpy as np
 import sys
 
-from filters.basic_high_pass import basic_high_pass
+from filters.high_pass import high_pass
 from utils.normalize import normalize
 
 
 def reinforced_high_pass(
     image: np.ndarray, kernel: np.ndarray, alpha=1.5
 ) -> np.ndarray:
-    high_pass_image = basic_high_pass(image=image, kernel=kernel)
+    high_pass_image = high_pass(image=image, kernel=kernel)
     result = alpha * high_pass_image
 
     return normalize(image=result)

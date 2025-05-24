@@ -5,7 +5,7 @@ from utils.correlation import correlation
 from utils.normalize import normalize
 
 
-def basic_high_pass(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
+def high_pass(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
     if image.ndim == 3:
         image = grayscale(image=image)
 
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     image = cv2.imread("../mock/bobsin.jpg")
 
     kernel = np.array([[-1, -1, -1], [-1, 8, -1], [-1, -1, -1]])
-    filtered_image = basic_high_pass(image=image, kernel=kernel)
+    filtered_image = high_pass(image=image, kernel=kernel)
 
     cv2.imshow("Basic high pass image", filtered_image)
     cv2.waitKey(0)

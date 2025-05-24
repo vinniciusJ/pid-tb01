@@ -1,10 +1,8 @@
-import cv2
 import numpy as np
-import sys
 
 from filters.grayscale import grayscale
 from utils.normalize import normalize
-from utils.convolve import correlation
+from utils.correlation import correlation
 
 
 def prewitt(image: np.ndarray) -> np.ndarray:
@@ -24,6 +22,9 @@ def prewitt(image: np.ndarray) -> np.ndarray:
 
 
 if __name__ == "__main__":
+    import cv2
+    import sys
+
     image = cv2.imread("../mock/bobsin.jpg")
 
     filtered_image = prewitt(image=image)
