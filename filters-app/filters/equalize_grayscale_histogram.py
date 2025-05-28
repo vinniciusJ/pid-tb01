@@ -3,7 +3,6 @@ import numpy as np
 from filters.grayscale_histogram import grayscale_histogram
 from utils.normalize import normalize
 
-
 def equalize_grayscale_histogram(image: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     image, histogram = grayscale_histogram(image=image)
     width, height = image.shape
@@ -16,7 +15,6 @@ def equalize_grayscale_histogram(image: np.ndarray) -> tuple[np.ndarray, np.ndar
     equalized_histogram = np.bincount(equalized_image.ravel(), minlength=256)
 
     return equalized_image, equalized_histogram
-
 
 if __name__ == "__main__":
     import cv2

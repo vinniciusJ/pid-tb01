@@ -5,12 +5,13 @@ import sys
 from filters.high_pass import high_pass
 from utils.normalize import normalize
 
-
 def reinforced_high_pass(
     image: np.ndarray, kernel: np.ndarray, alpha=1.5
 ) -> np.ndarray:
     high_pass_image = high_pass(image=image, kernel=kernel)
     result = alpha * high_pass_image
+
+    print(f"Reinforced High Pass: alpha={alpha}, kernel shape={kernel.shape}")
 
     return normalize(image=result)
 

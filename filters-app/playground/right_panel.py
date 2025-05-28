@@ -2,14 +2,18 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QRadioButton, QButto
 from PySide6.QtGui import QFont
 from PySide6.QtCore import Qt
 from components.primary_button import PrimaryButton
-from playground.params.threshold_params import ThresholdParamsWidget
-from playground.params.high_pass_params import HighPassParamsWidget
 from PySide6.QtWidgets import QMessageBox
 from filter_type import FilterType
 
 from style import BG_COLOR_2
 
-FILTERS = FilterType.list()
+from playground.params.threshold_params import ThresholdParamsWidget
+from playground.params.high_pass_params import HighPassParamsWidget
+from playground.params.reinforced_high_pass_params import ReinforcedHighPassParamsWidget 
+
+from filters_registry import FILTER_REGISTRY
+
+FILTERS = list(FILTER_REGISTRY.keys())
 
 class RightPanel(QWidget):
     def __init__(self, apply_callback=None):
@@ -87,14 +91,11 @@ class RightPanel(QWidget):
             return None
         return FilterType.from_label(checked_button.text())
 
-
     def get_filter_params(self) -> dict:
         if hasattr(self, "param_widget") and self.param_widget:
-            if hasattr(self.param_widget, "get_values"):
-                return self.param_widget.get_values()  
-            elif hasattr(self.param_widget, "get_kernel"):
-                return {"kernel": self.param_widget.get_kernel()} 
+            return self.param_widget.get_params()
         return {}
+
 
     def handle_filter_id_click(self, id: int):
         filter_type = FILTERS[id]
@@ -107,12 +108,10 @@ class RightPanel(QWidget):
             if child.widget():
                 child.widget().deleteLater()
 
-        if filter_type == FilterType.THRESHOLDING:
-            self.param_widget = ThresholdParamsWidget()
+        self.param_widget = None
+        filter_meta = FILTER_REGISTRY.get(filter_type)
+        
+        if filter_meta and "widget" in filter_meta:
+            self.param_widget = filter_meta["widget"]()
             self.param_container.addWidget(self.param_widget)
-        elif filter_type == FilterType.HIGH_PASS:
-            self.param_widget = HighPassParamsWidget()
-            self.param_container.addWidget(self.param_widget)
-        else:
-            self.param_widget = None
 

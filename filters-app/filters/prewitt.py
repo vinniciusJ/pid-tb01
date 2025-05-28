@@ -4,7 +4,6 @@ from filters.grayscale import grayscale
 from utils.normalize import normalize
 from utils.correlation import correlation
 
-
 def prewitt(image: np.ndarray) -> np.ndarray:
     if len(image.shape) == 3:
         image = grayscale(image=image)

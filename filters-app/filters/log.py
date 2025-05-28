@@ -4,7 +4,6 @@ import math
 from filters.grayscale import grayscale
 from utils.normalize import normalize
 
-
 def log(image: np.ndarray, c: int) -> np.ndarray:
     if len(image.shape) == 3:
         image = grayscale(image=image)
@@ -18,7 +17,6 @@ def log(image: np.ndarray, c: int) -> np.ndarray:
             result[i, j] = c * math.log(1 + image[i, j])
 
     return normalize(image=result)
-
 
 if __name__ == "__main__":
     import cv2

@@ -31,6 +31,7 @@ class HighPassParamsWidget(QWidget):
         layout.addLayout(self.kernel_grid)
         self.setLayout(layout)
 
-    def get_kernel(self):
+    def get_params(self):
         kernel = np.array([[self.inputs[i][j].value() for j in range(3)] for i in range(3)])
-        return kernel
+        return {"kernel": kernel}
+

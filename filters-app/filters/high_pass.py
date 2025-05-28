@@ -4,7 +4,6 @@ from filters.grayscale import grayscale
 from utils.correlation import correlation
 from utils.normalize import normalize
 
-
 def high_pass(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
     if image.ndim == 3:
         image = grayscale(image=image)
@@ -12,7 +11,6 @@ def high_pass(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
     result = correlation(image=image, kernel=kernel)
 
     return normalize(image=result)
-
 
 if __name__ == "__main__":
     import cv2

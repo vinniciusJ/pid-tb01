@@ -2,7 +2,6 @@ import numpy as np
 
 from filters.grayscale import grayscale
 
-
 def grayscale_histogram(image: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     if len(image.shape) == 3:
         image = grayscale(image=image)
@@ -10,7 +9,6 @@ def grayscale_histogram(image: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     histogram = np.bincount(image.ravel(), minlength=256)
 
     return (image, histogram)
-
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt

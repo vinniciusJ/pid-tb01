@@ -1,7 +1,6 @@
 from typing import Callable
 import numpy as np
 
-
 def correlation(
     image: np.ndarray,
     kernel: np.ndarray,

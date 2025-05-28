@@ -4,7 +4,6 @@ from filters.grayscale import grayscale
 from utils.correlation import correlation
 from utils.normalize import normalize
 
-
 def sobel(image: np.ndarray) -> np.ndarray:
     if len(image.shape) == 3:
         image = grayscale(image=image)
@@ -18,7 +17,6 @@ def sobel(image: np.ndarray) -> np.ndarray:
     result = np.sqrt(gx**2 + gy**2)
 
     return normalize(image=result)
-
 
 if __name__ == "__main__":
     import cv2

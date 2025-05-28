@@ -7,11 +7,11 @@ class ThresholdParamsWidget(QWidget):
 
         layout = QFormLayout()
 
-        self.threshold_input = Input("Threshold:")
+        self.threshold_input = Input("Limiar (Threshold):")
         self.threshold_input.setRange(0, 255)
         self.threshold_input.setValue(127)
 
-        self.max_value_input = Input("Max Value:")
+        self.max_value_input = Input("Valor máximo:")
         self.max_value_input.setRange(0, 255)
         self.max_value_input.setValue(255)
 
@@ -20,7 +20,7 @@ class ThresholdParamsWidget(QWidget):
 
         self.setLayout(layout)
 
-    def get_values(self):
+    def get_params(self):
         return {
             "threshold": self.threshold_input.value(),
             "max_value": self.max_value_input.value()
