@@ -7,12 +7,8 @@ from playground.right_panel import RightPanel
 import cv2
 from filters.grayscale import grayscale
 from filters.thresholding import thresholding
-from filters.basic_high_pass import high_pass
-from filters.basic_low_pass import mean_low_pass
-from filters.median import median_filter
 
 from filter_type import FilterType
-
 
 class Playground(QWidget):
     def __init__(self, choose_image_callback):

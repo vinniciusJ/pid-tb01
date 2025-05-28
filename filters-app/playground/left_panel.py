@@ -3,7 +3,7 @@ from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtCore import Qt
 from components.text_button import TextButton
 from style import PRIMARY_COLOR
-from utils import clear_layout
+from utils.clear_layout import clear_layout
 import cv2
 
 IMAGE_WIDTH = 500
