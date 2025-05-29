@@ -15,7 +15,6 @@ def prewitt(image: np.ndarray) -> np.ndarray:
     gy = correlation(image=image, kernel=kernel_y)
 
     result = np.sqrt(gx**2 + gy**2)
-    result = np.clip(result, 0, 255).astype(np.uint8)
 
     return normalize(image=result)
 
