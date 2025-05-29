@@ -6,6 +6,9 @@ from playground.left_panel import LeftPanel
 from playground.right_panel import RightPanel
 import cv2
 
+from components.histogram_widget import HistogramWidget
+from PySide6.QtWidgets import QMessageBox
+
 from filters_registry import FILTER_REGISTRY
 class Playground(QWidget):
     def __init__(self, choose_image_callback):
@@ -52,7 +55,20 @@ class Playground(QWidget):
         filter_meta = FILTER_REGISTRY.get(selected_filter)
         if filter_meta and "function" in filter_meta:
             try:
-                result_image = filter_meta["function"](image, **params)
-                self.left_panel.set_processed_image(result_image)
+                result = filter_meta["function"](image, **params)
+
+                if selected_filter.name == "HISTOGRAM" or selected_filter.name == "HIST_EQUALIZATION":
+                    processed_image, histogram_data = result
+                    self.left_panel.set_processed_image(processed_image)
+
+                    self.histogram_window = HistogramWidget(histogram_data)
+                    self.histogram_window.setWindowTitle("Histograma")
+                    self.histogram_window.show()
+
+                else:
+                    self.left_panel.set_processed_image(result)
+
             except Exception as e:
                 print(f"Erro ao aplicar filtro: {e}")
+                QMessageBox.critical(self, "Erro", f"Erro ao aplicar filtro: {e}")
+

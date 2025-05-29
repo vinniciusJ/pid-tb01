@@ -16,7 +16,7 @@ class Input(QWidget):
         self.is_float = is_float
         if self.is_float:
             self.spinbox = QDoubleSpinBox()
-            self.spinbox.setDecimals(2)  # Pode ajustar o número de casas decimais se quiser
+            self.spinbox.setDecimals(2) 
         else:
             self.spinbox = QSpinBox()
 
