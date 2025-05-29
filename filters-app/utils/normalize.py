@@ -7,9 +7,9 @@ def normalize_min_max(value: int, min_value: int, max_value: int) -> float:
 def normalize(image: np.ndarray) -> np.ndarray:
     min_value = np.min(image)
     max_value = np.max(image)
-
-    if np.all(image >= 0) and np.all(image <= 255):
-        return image.astype(np.uint8)
+    
+    if max_value == min_value:
+        return np.full_like(image, 0, dtype=np.uint8)
 
     normalized_image = np.zeros_like(image, dtype=np.float32)
 
