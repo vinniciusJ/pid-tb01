@@ -37,3 +37,17 @@ def divide_images(first_image: np.ndarray, second_image: np.ndarray) -> np.ndarr
     result = first_image / second_image
 
     return normalize(image=result)
+
+
+def apply_math_operation(
+    first_image: np.ndarray, second_image: np.ndarray, operation: str
+) -> np.ndarray:
+    if operation == "Adição":
+        return sum_images(first_image, second_image)
+    elif operation == "Subtração":
+        return subtract_images(first_image, second_image)
+    elif operation == "Multiplicação":
+        return multiply_images(first_image, second_image)
+    else:
+        return divide_images(first_image, second_image)
+

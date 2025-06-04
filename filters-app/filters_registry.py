@@ -7,16 +7,18 @@ from filters.mean_low_pass import mean_low_pass
 from filters.median_low_pass import median_low_pass
 from filters.roberts import roberts
 from filters.prewitt import prewitt
-from filters.sobel import sobel 
+from filters.sobel import sobel
 from filters.log import log
 from filters.grayscale_histogram import grayscale_histogram
 from filters.equalize_grayscale_histogram import equalize_grayscale_histogram
+from filters.math import apply_math_operation
 
 from playground.params.threshold_params import ThresholdParamsWidget
 from playground.params.high_pass_params import HighPassParamsWidget
 from playground.params.reinforced_high_pass_params import ReinforcedHighPassParamsWidget
 from playground.params.low_pas_params import LowPassParamsWidget
 from playground.params.log_params import LogParamsWidget
+from playground.params.math_params import OperationSelectWidget
 
 FILTER_REGISTRY = {
     FilterType.THRESHOLDING: {
@@ -60,5 +62,9 @@ FILTER_REGISTRY = {
     },
     FilterType.HIST_EQUALIZATION: {
         "function": equalize_grayscale_histogram,
+    },
+    FilterType.MATH_OPERATIONS: {
+        "widget": OperationSelectWidget,
+        "function": apply_math_operation,
     },
 }

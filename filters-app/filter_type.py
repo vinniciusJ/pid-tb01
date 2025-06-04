@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class FilterType(Enum):
     THRESHOLDING = "Limiarização"
     GRAYSCALE = "Escala de Cinza"
@@ -13,11 +14,12 @@ class FilterType(Enum):
     LOG_TRANSFORM = "Transformacao logaritmica"
     HISTOGRAM = "Histograma (Escala de cinza)"
     HIST_EQUALIZATION = "Equalização de histograma"
+    MATH_OPERATIONS = "Operações matemáticas"
 
     @classmethod
     def list(cls):
         return list(cls)
-    
+
     @classmethod
     def from_label(cls, label: str):
         for f in cls:
