@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (
     QSizePolicy,
     QVBoxLayout,
     QWidget,
+    QScrollArea,
 )
 
 from components.text_button import TextButton
@@ -26,7 +27,6 @@ class FormPanel(QWidget):
     ):
         super().__init__()
 
-        # self.image_path = st_image_path
         self.on_st_image_button_click = on_st_image_button_click
         self.on_nd_image_button_click = on_nd_image_button_click
 
@@ -42,22 +42,33 @@ class FormPanel(QWidget):
         self.layout = QVBoxLayout()
         self.layout.setAlignment(Qt.AlignTop)
 
-        self.image_container_widget = QWidget()
-        self.image_container_widget.setSizePolicy(
-            QSizePolicy.Expanding, QSizePolicy.Expanding
-        )
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
 
-        self.main_images_display_layout = QVBoxLayout()
-        self.main_images_display_layout.setAlignment(Qt.AlignCenter)
-        self.image_container_widget.setLayout(self.main_images_display_layout)
+        self.scroll_area_widget = QWidget()
 
-        self.layout.addWidget(self.image_container_widget)
+        self.scroll_area_layout = QHBoxLayout()
+        self.scroll_area_layout.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
+
+        self.outer_layout = QHBoxLayout(self.scroll_area_widget)
+        self.outer_layout.addStretch()
+        self.outer_layout.addLayout(self.scroll_area_layout)
+        self.outer_layout.addStretch()
+
+        self.scroll_area.setWidget(self.scroll_area_widget)
+        self.layout.addWidget(self.scroll_area)
         self.setLayout(self.layout)
 
         self.render_image_area()
 
     def _create_image_column(
-        self, title, pixmap, visible=True, placeholder_callback=None
+        self,
+        title,
+        pixmap,
+        visible=True,
+        placeholder_callback=None,
+        change_image_callback=None,
     ):
         container = QWidget()
         layout = QVBoxLayout(container)
@@ -87,16 +98,17 @@ class FormPanel(QWidget):
 
         layout.addWidget(image_label)
 
+        if change_image_callback and pixmap:
+            change_button = TextButton("Alterar imagem", on_click=change_image_callback)
+            layout.addWidget(change_button)
+
         if not visible:
             container.hide()
 
         return container, image_label, title_label
 
     def render_image_area(self):
-        clear_layout(self.main_images_display_layout)
-
-        row_layout = QHBoxLayout()
-        row_layout.setAlignment(Qt.AlignCenter)
+        clear_layout(self.scroll_area_layout)
 
         orig_pixmap_scaled = (
             self.original_pixmap.scaled(
@@ -112,6 +124,7 @@ class FormPanel(QWidget):
                 orig_pixmap_scaled,
                 visible=True,
                 placeholder_callback=self.on_st_image_button_click,
+                change_image_callback=self.on_st_image_button_click,
             )
         )
 
@@ -130,6 +143,11 @@ class FormPanel(QWidget):
                 visible=bool(self.processed_pixmap),
             )
         )
+
+        if self.processed_pixmap:
+            empty_widget = QWidget()
+            empty_widget.setFixedHeight(60)
+            self.processed_column.layout().addWidget(empty_widget)
 
         if not self.processed_pixmap:
             self.processed_image_view.hide()
@@ -152,15 +170,15 @@ class FormPanel(QWidget):
             add_pixmap_scaled,
             visible=self.show_nd_image,
             placeholder_callback=self.on_nd_image_button_click,
+            change_image_callback=self.on_nd_image_button_click,
         )
 
-        row_layout.addWidget(self.original_column)
+        self.scroll_area_layout.addWidget(self.original_column)
 
         if self.show_nd_image:
-            row_layout.addWidget(self.additional_column)
-        row_layout.addWidget(self.processed_column)
+            self.scroll_area_layout.addWidget(self.additional_column)
 
-        self.main_images_display_layout.addLayout(row_layout)
+        self.scroll_area_layout.addWidget(self.processed_column)
 
     def show_nd_image_column(self):
         self.show_nd_image = True
@@ -171,6 +189,8 @@ class FormPanel(QWidget):
         self.render_image_area()
 
     def set_st_image(self, path):
+        self.set_processed_image(None)
+
         self.original_pixmap = (
             QPixmap(path) if path and not QPixmap(path).isNull() else None
         )
@@ -189,6 +209,8 @@ class FormPanel(QWidget):
             print(f"Erro ao definir imagem processada: {e}")
 
     def set_nd_image(self, path_or_data):
+        self.set_processed_image(None)
+
         try:
             if isinstance(path_or_data, str):
                 pixmap = QPixmap(path_or_data)

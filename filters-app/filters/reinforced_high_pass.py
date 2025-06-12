@@ -3,15 +3,17 @@ import numpy as np
 import sys
 
 from filters.high_pass import high_pass
+from filters.grayscale import grayscale
 from utils.normalize import normalize
+
 
 def reinforced_high_pass(
     image: np.ndarray, kernel: np.ndarray, alpha=1.5
 ) -> np.ndarray:
+    grayscale_image = grayscale(image=image)
     high_pass_image = high_pass(image=image, kernel=kernel)
-    result = alpha * high_pass_image
 
-    print(f"Reinforced High Pass: alpha={alpha}, kernel shape={kernel.shape}")
+    result = grayscale_image + (alpha * high_pass_image)
 
     return normalize(image=result)
 

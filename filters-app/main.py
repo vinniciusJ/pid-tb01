@@ -11,8 +11,8 @@ if __name__ == "__main__":
     apply_dark_theme(app)
 
     window = Playground()
-
     window.setWindowTitle("Filters APP")
-    window.resize(200, 200)
-    window.show()
+
+    window.showMaximized()
+
     sys.exit(app.exec())

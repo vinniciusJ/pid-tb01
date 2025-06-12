@@ -34,6 +34,8 @@ def divide_images(first_image: np.ndarray, second_image: np.ndarray) -> np.ndarr
     if first_image.shape != second_image.shape:
         raise ValueError("As imagens devem ter o mesmo tamanho.")
 
+    second_image[second_image == 0] = 1
+
     result = first_image / second_image
 
     return normalize(image=result)
@@ -50,4 +52,3 @@ def apply_math_operation(
         return multiply_images(first_image, second_image)
     else:
         return divide_images(first_image, second_image)
-

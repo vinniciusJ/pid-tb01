@@ -32,14 +32,6 @@ class Playground(QWidget):
     def init_ui(self):
         main_layout = QVBoxLayout()
 
-        header = QLabel("FiltersApp")
-        header.setFont(QFont("Ubuntu", 40, weight=50))
-        header.setStyleSheet(header_styles)
-
-        header.setAlignment(Qt.AlignLeft)
-
-        main_layout.addWidget(header)
-
         content_layout = QHBoxLayout()
         content_layout.setAlignment(Qt.AlignCenter)
 
@@ -104,6 +96,8 @@ class Playground(QWidget):
                 QMessageBox.critical(self, "Erro", f"Erro ao aplicar filtro: {e}")
 
     def on_filter_selected(self, filter_type: FilterType):
+        self.form_panel.set_processed_image(None)
+
         if filter_type == FilterType.MATH_OPERATIONS:
             self.form_panel.show_nd_image_column()
         else:

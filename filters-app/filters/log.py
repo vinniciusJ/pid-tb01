@@ -4,19 +4,19 @@ import math
 from filters.grayscale import grayscale
 from utils.normalize import normalize
 
-def log(image: np.ndarray, c: int) -> np.ndarray:
+
+def log(image: np.ndarray) -> np.ndarray:
     if len(image.shape) == 3:
         image = grayscale(image=image)
 
-    width, height = image.shape
+    image = image.astype(np.float32)
 
-    result = np.zeros_like(image, dtype=np.float32)
+    c = 255 / np.log1p(np.max(image))
 
-    for i in range(width):
-        for j in range(height):
-            result[i, j] = c * math.log(1 + image[i, j])
+    result = c * np.log1p(image)
 
     return normalize(image=result)
+
 
 if __name__ == "__main__":
     import cv2

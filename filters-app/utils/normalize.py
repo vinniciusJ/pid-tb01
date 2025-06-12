@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def normalize_min_max(value: int, min_value: int, max_value: int) -> float:
     return (value - min_value) / (max_value - min_value) * 255
 
@@ -7,7 +8,10 @@ def normalize_min_max(value: int, min_value: int, max_value: int) -> float:
 def normalize(image: np.ndarray) -> np.ndarray:
     min_value = np.min(image)
     max_value = np.max(image)
-    
+
+    if min_value >= 0 and max_value <= 255:
+        return image.astype(np.uint8)
+
     if max_value == min_value:
         return np.full_like(image, 0, dtype=np.uint8)
 

@@ -54,7 +54,6 @@ FILTER_REGISTRY = {
         "function": sobel,
     },
     FilterType.LOG_TRANSFORM: {
-        "widget": LogParamsWidget,
         "function": log,
     },
     FilterType.HISTOGRAM: {
