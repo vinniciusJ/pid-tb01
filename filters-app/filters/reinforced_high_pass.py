@@ -6,7 +6,6 @@ from filters.high_pass import high_pass
 from filters.grayscale import grayscale
 from utils.normalize import normalize
 
-
 def reinforced_high_pass(
     image: np.ndarray, kernel: np.ndarray, alpha=1.5
 ) -> np.ndarray:

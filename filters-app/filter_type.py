@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class FilterType(Enum):
     THRESHOLDING = "Limiarização"
     GRAYSCALE = "Escala de Cinza"

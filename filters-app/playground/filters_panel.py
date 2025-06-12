@@ -9,7 +9,6 @@ from style import BG_COLOR_2
 
 FILTERS = list(FILTER_REGISTRY.keys())
 
-
 class FiltersPanel(QWidget):
     filter_selected = Signal(object)
 

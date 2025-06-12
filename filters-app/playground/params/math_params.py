@@ -2,7 +2,6 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QComboBox, QSizePoli
 from PySide6.QtGui import QFont
 from PySide6.QtCore import Qt
 
-
 class OperationSelectWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)

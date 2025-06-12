@@ -1,9 +1,7 @@
 import numpy as np
-import math
 
 from filters.grayscale import grayscale
 from utils.normalize import normalize
-
 
 def log(image: np.ndarray) -> np.ndarray:
     if len(image.shape) == 3:
@@ -24,7 +22,7 @@ if __name__ == "__main__":
 
     image = cv2.imread("../mock/bobsin.jpg")
 
-    filtered_image = log(image=image, c=1)
+    filtered_image = log(image=image)
 
     cv2.imshow("LoG Filtered Image", filtered_image)
     cv2.waitKey(0)

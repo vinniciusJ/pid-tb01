@@ -5,7 +5,6 @@ from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtWidgets import (
     QLabel,
     QHBoxLayout,
-    QSizePolicy,
     QVBoxLayout,
     QWidget,
     QScrollArea,
@@ -14,10 +13,8 @@ from PySide6.QtWidgets import (
 from components.text_button import TextButton
 from utils.clear_layout import clear_layout
 
-
 IMAGE_WIDTH = 500
 IMAGE_HEIGHT = 800
-
 
 class FormPanel(QWidget):
     def __init__(
@@ -35,6 +32,8 @@ class FormPanel(QWidget):
         self.additional_pixmap = None
 
         self.show_nd_image = False
+
+        self.current_filter_name = None
 
         self.init_ui()
 
@@ -107,7 +106,7 @@ class FormPanel(QWidget):
 
         return container, image_label, title_label
 
-    def render_image_area(self):
+    def render_image_area(self, filter_name=None):
         clear_layout(self.scroll_area_layout)
 
         orig_pixmap_scaled = (
@@ -136,9 +135,11 @@ class FormPanel(QWidget):
             else None
         )
 
+        label_text = f"Processada ({self.current_filter_name})" if self.current_filter_name else "Processada"
+
         self.processed_column, self.processed_image_view, self.processed_label_title = (
             self._create_image_column(
-                "Processada",
+                label_text,
                 proc_pixmap_scaled,
                 visible=bool(self.processed_pixmap),
             )
@@ -196,14 +197,22 @@ class FormPanel(QWidget):
         )
         self.render_image_area()
 
-    def set_processed_image(self, image_data):
+    def set_processed_image(self, image_data, filter_name=None):
         if image_data is None:
             self.processed_pixmap = None
+            self.current_filter_name = None
             self.render_image_area()
             return
 
         try:
             self.processed_pixmap = self._create_pixmap_from_cv_image(image_data)
+            
+            if filter_name:
+                self.current_filter_name = filter_name
+
+            label_text = f"Processada ({self.current_filter_name})" if self.current_filter_name else "Processada"
+            self.processed_label_title.setText(label_text)
+
             self.render_image_area()
         except Exception as e:
             print(f"Erro ao definir imagem processada: {e}")

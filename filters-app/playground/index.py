@@ -20,7 +20,6 @@ from style import TEXT_COLOR
 
 header_styles = f"color: rgb({TEXT_COLOR.red()}, {TEXT_COLOR.green()}, {TEXT_COLOR.blue()});  padding: 8px;"
 
-
 class Playground(QWidget):
     def __init__(self):
         super().__init__()
@@ -89,17 +88,16 @@ class Playground(QWidget):
                     self.histogram_window.setWindowTitle("Histograma")
                     self.histogram_window.show()
                 else:
-                    self.form_panel.set_processed_image(result)
+                    self.form_panel.set_processed_image(result, filter_name=selected_filter.value)
 
             except Exception as e:
                 print(f"Erro ao aplicar filtro: {e}")
                 QMessageBox.critical(self, "Erro", f"Erro ao aplicar filtro: {e}")
 
     def on_filter_selected(self, filter_type: FilterType):
-        self.form_panel.set_processed_image(None)
-
         if filter_type == FilterType.MATH_OPERATIONS:
             self.form_panel.show_nd_image_column()
+            self.form_panel.set_processed_image(None)
         else:
             self.form_panel.hide_nd_image_column()
 
